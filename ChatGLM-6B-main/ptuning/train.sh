@@ -1,15 +1,15 @@
 PRE_SEQ_LEN=128
 LR=2e-2
 
-CUDA_VISIBLE_DEVICES=0 python3 main.py \
+CUDA_VISIBLE_DEVICES=0 python main.py \
     --do_train \
     --train_file AdvertiseGen/train.json \
     --validation_file AdvertiseGen/dev.json \
     --prompt_column content \
     --response_column summary \
     --overwrite_cache \
-    --model_name_or_path THUDM/chatglm-6b \
-    --output_dir output/adgen-chatglm-6b-pt-$PRE_SEQ_LEN-$LR \
+    --model_name_or_path THUDM/chatglm-6b-int4 \
+    --output_dir output/adgen-chatglm-6b-int4-pt-$PRE_SEQ_LEN-$LR \
     --overwrite_output_dir \
     --max_source_length 64 \
     --max_target_length 64 \
