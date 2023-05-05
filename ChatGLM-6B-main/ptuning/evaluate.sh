@@ -1,8 +1,8 @@
 PRE_SEQ_LEN=128
-CHECKPOINT=adgen-chatglm-6b-pt-128-2e-2
+CHECKPOINT=adgen-chatglm-6b-int4-pt-128-2e-2
 STEP=3000
 
-CUDA_VISIBLE_DEVICES=0 python3 main.py \
+CUDA_VISIBLE_DEVICES=0 python main.py \
     --do_predict \
     --validation_file AdvertiseGen/dev.json \
     --test_file AdvertiseGen/dev.json \
