@@ -1,6 +1,8 @@
 import os
+import argparse
 import torch
 from transformers import AutoConfig, AutoModel, AutoTokenizer 
+
 
 CHECKPOINT_PATH = "output/adgen-chatglm-6b-int4-pt-128-2e-2/checkpoint-3000"
 
