@@ -9,7 +9,7 @@ config = AutoConfig.from_pretrained("THUDM/chatglm-6b-int4", trust_remote_code =
 model = AutoModel.from_pretrained("THUDM/chatglm-6b-int4", config = config, trust_remote_code = True)
 prefix_state_dict = torch.load(f"{CHECKPOINT_PATH}/pytorch_model.bin")
 
-print(f"hoho: prefix_state_dict: {prefix_state_dict}")
+# print(f"hoho: prefix_state_dict: {prefix_state_dict}")
 
 new_prefix_state_dict = {}
 for k, v in prefix_state_dict.items():
