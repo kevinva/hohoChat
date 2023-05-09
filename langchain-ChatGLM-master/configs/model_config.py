@@ -25,10 +25,10 @@ llm_model_dict = {
 }
 
 # LLM model name
-LLM_MODEL = "chatglm-6b"
+LLM_MODEL = "chatglm-6b-int4"
 
 # LLM streaming reponse
-STREAMING = True
+STREAMING = False
 
 # Use p-tuning-v2 PrefixEncoder
 USE_PTUNING_V2 = False
@@ -49,4 +49,4 @@ PROMPT_TEMPLATE = """已知信息：
 根据上述已知信息，简洁和专业的来回答用户的问题。如果无法从中得到答案，请说 “根据已知信息无法回答该问题” 或 “没有提供足够的相关信息”，不允许在答案中添加编造成分，答案请使用中文。 问题是：{question}"""
 
 # 匹配后单段上下文长度
-CHUNK_SIZE = 500
+CHUNK_SIZE = 300

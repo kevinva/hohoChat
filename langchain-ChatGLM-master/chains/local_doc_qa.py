@@ -11,7 +11,7 @@ import numpy as np
 from utils import torch_gc
 
 # return top-k text chunk from vector store
-VECTOR_SEARCH_TOP_K = 6
+VECTOR_SEARCH_TOP_K = 3
 
 # LLM input history length
 LLM_HISTORY_LEN = 3
