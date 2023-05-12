@@ -42,17 +42,17 @@ from sklearn.model_selection import train_test_split
 # print(f"max_target_length: {np.max(max_target_lengths)}")
 
 
-# train_law_cases, eval_law_cases = train_test_split(output_contents, test_size = 0.2, random_state = RANDOM_STATE)
+# train_law_cases, val_law_cases = train_test_split(output_contents, test_size = 0.2, random_state = RANDOM_STATE)
 
 
 # train_json_str = "\n".join(train_law_cases)
-# eval_json_str = "\n".join(eval_law_cases)
+# val_json_str = "\n".join(val_law_cases)
 
 # with open(OUTPUT_DIR + "/train_law_cases.json", "w", encoding = "utf8") as f1:
 #     f1.write(train_json_str)
 
-# with open(OUTPUT_DIR + "/eval_law_cases.json", "w", encoding = "utf8") as f2:
-#     f2.write(eval_json_str)
+# with open(OUTPUT_DIR + "/val_law_cases.json", "w", encoding = "utf8") as f2:
+#     f2.write(val_json_str)
 
 
 # fig, axes = plt.subplots(figsize = (12, 6), ncols = 1, nrows = 2)
@@ -69,7 +69,7 @@ from sklearn.model_selection import train_test_split
 # plt.savefig(OUTPUT_DIR + "/law_cases_length_distribution.png")
 
 # 根据内容长度筛选数据
-file_path = "../outputs/data/train_law_cases.json"
+file_path = "../outputs/data/val_law_cases.json"
 result_list = []
 with open(file_path, "r", encoding = "utf8") as f:
     content = f.read()
@@ -82,5 +82,5 @@ with open(file_path, "r", encoding = "utf8") as f:
             result_list.append(case_content)
 
 result_str = "\n".join(result_list)
-with open("../outputs/data/train_law_cases_len500.json", "w", encoding = "utf8") as f:
+with open("../outputs/data/val_law_cases_len500.json", "w", encoding = "utf8") as f:
     f.write(result_str)
