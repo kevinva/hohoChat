@@ -4,19 +4,20 @@ import torch
 from transformers import AutoConfig, AutoModel, AutoTokenizer
 
 
-CHECKPOINT_PATH = "output/adgen-chatglm-6b-int4-pt-128-2e-2/checkpoint-3000"
+CHECKPOINT_PATH = "output/law-chatglm-6b-int4-pt-128-2e-2/checkpoint-3000"
 
 g_parser = argparse.ArgumentParser(description = "Help Information")
 g_parser.add_argument('--query', '-q', default = '你好', help = 'input your question')
 g_args = g_parser.parse_args()
 
 def main():
-    tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b-int4", trust_remote_code = True)
-    config = AutoConfig.from_pretrained("THUDM/chatglm-6b-int4", trust_remote_code = True, pre_seq_len = 128)
-    model = AutoModel.from_pretrained("THUDM/chatglm-6b-int4", config = config, trust_remote_code = True)
+    tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b-int4", trust_remote_code = True, revision = "v0.1.0")
+    config = AutoConfig.from_pretrained("THUDM/chatglm-6b-int4", trust_remote_code = True, pre_seq_len = 128, revision = "v0.1.0")
+    model = AutoModel.from_pretrained("THUDM/chatglm-6b-int4", config = config, trust_remote_code = True, revision = "v0.1.0")
     prefix_state_dict = torch.load(f"{CHECKPOINT_PATH}/pytorch_model.bin")
 
     # print(f"hoho: prefix_state_dict: {prefix_state_dict}")
+    print(f"query = {g_args.query}")
 
     new_prefix_state_dict = {}
     for k, v in prefix_state_dict.items():
