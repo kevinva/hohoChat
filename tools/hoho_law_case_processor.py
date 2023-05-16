@@ -69,7 +69,7 @@ from sklearn.model_selection import train_test_split
 # plt.savefig(OUTPUT_DIR + "/law_cases_length_distribution.png")
 
 # 根据内容长度筛选数据
-file_path = "../outputs/data/val_law_cases.json"
+file_path = "../outputs/data/train_law_cases.json"
 result_list = []
 with open(file_path, "r", encoding = "utf8") as f:
     content = f.read()
@@ -78,9 +78,9 @@ with open(file_path, "r", encoding = "utf8") as f:
         case_info = json.loads(case_content)
         case_description = case_info.get("ajjbqk", "")
         judgement = case_info.get("pjjg", "")
-        if len(case_description) < 500 and len(judgement) < 500:
+        if len(case_description) < 300 and len(judgement) < 300:
             result_list.append(case_content)
 
 result_str = "\n".join(result_list)
-with open("../outputs/data/val_law_cases_len500.json", "w", encoding = "utf8") as f:
+with open("../outputs/data/train_law_cases_len300.json", "w", encoding = "utf8") as f:
     f.write(result_str)
