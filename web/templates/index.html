@@ -1,8 +1,31 @@
+<!-- index.html -->
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>刷新数据示例</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+        
+        #loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body>
     <h1>刷新数据示例</h1>
@@ -23,19 +46,30 @@
         年龄: {{ data['age'] }}
     </div>
 
+    <div id="loading-overlay">
+        <div id="loading-spinner">加载中...</div>
+    </div>
+
     <script>
         $(document).ready(function() {
             $('#data-form').submit(function(event) {
                 event.preventDefault();  // 阻止表单的默认提交行为
 
+                // 显示加载界面
+                $('#loading-overlay').show();
+
                 // 使用AJAX发送表单数据到后端
                 $.ajax({
-                    url: '/update',
+                    url: '/query',
                     type: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
                         // 更新显示刷新后的数据
                         $('#result').html('姓名: ' + response.name + '<br>年龄: ' + response.age);
+                    },
+                    complete: function() {
+                        // 隐藏加载界面
+                        $('#loading-overlay').hide();
                     }
                 });
             });

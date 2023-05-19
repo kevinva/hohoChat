@@ -1,4 +1,12 @@
+import os
+import sys
+import time
+
+dev_root = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "dev")
+sys.path.append(dev_root)
+
 from flask import Flask, render_template, request, jsonify
+import hoho_law_ai_core as law_core
 
 app = Flask(__name__)
 
@@ -9,8 +17,13 @@ data = {'name': 'John', 'age': 25}
 def index():
     return render_template('index.html', data=data)
 
-@app.route('/update', methods=['POST'])
-def update_data():
+@app.route('/query', methods=['POST'])
+def query():
+
+    law_core.main()
+
+    time.sleep(3)
+
     # 获取表单提交的数据
     new_name = request.form['name']
     new_age = request.form['age']
