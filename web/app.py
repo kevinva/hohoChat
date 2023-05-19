@@ -24,7 +24,7 @@ def query():
     answer, history = law_core.display_answer(question, g_chat_history)
 
     g_data["question"] = question
-    g_data['answer'] = answer
+    g_data['answer'] = answer["result"]
 
     return jsonify(g_data)
 
