@@ -10,30 +10,23 @@ import hoho_law_ai_core as law_core
 
 app = Flask(__name__)
 
-# 假设这是您的初始数据
-data = {'name': 'John', 'age': 25}
+g_chat_history = []  # hoho_todo
+g_data = {"answer": ""}
 
 @app.route('/')
 def index():
-    return render_template('index.html', data=data)
+    return render_template('index.html', data = g_data)
+
 
 @app.route('/query', methods=['POST'])
 def query():
+    question = request.form['question']
+    answer, history = law_core.display_answer(question, g_chat_history)
 
-    law_core.main()
+    g_data['answer'] = answer
 
-    time.sleep(3)
+    return jsonify(g_data)
 
-    # 获取表单提交的数据
-    new_name = request.form['name']
-    new_age = request.form['age']
-
-    # 更新数据
-    data['name'] = new_name
-    data['age'] = new_age
-
-    # 返回更新后的数据作为JSON响应
-    return jsonify(data)
 
 if __name__ == '__main__':
     app.run()
