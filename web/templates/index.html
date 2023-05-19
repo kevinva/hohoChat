@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>刷新数据示例</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>刷新数据示例</h1>
+    
+    <form id="data-form">
+        <label for="name">姓名:</label>
+        <input type="text" id="name" name="name" value="{{ data['name'] }}"><br><br>
+
+        <label for="age">年龄:</label>
+        <input type="text" id="age" name="age" value="{{ data['age'] }}"><br><br>
+
+        <input type="submit" value="提交">
+    </form>
+
+    <div id="result">
+        <!-- 这里将显示刷新后的数据 -->
+        姓名: {{ data['name'] }}<br>
+        年龄: {{ data['age'] }}
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#data-form').submit(function(event) {
+                event.preventDefault();  // 阻止表单的默认提交行为
+
+                // 使用AJAX发送表单数据到后端
+                $.ajax({
+                    url: '/update',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        // 更新显示刷新后的数据
+                        $('#result').html('姓名: ' + response.name + '<br>年龄: ' + response.age);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
