@@ -146,6 +146,12 @@ def main():
 
     print("[hoho] main()")
 
+    while True:
+        question = input("请输入问题：(输入'qiut'退出)")
+        if question == "quit":
+            break
+        else:
+            print(f"[hoho] question: {question}")
 
 
 if __name__ == "__main__":
