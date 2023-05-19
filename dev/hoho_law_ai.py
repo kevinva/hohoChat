@@ -87,11 +87,17 @@ def init_vector_store(vs_path = None, docs_path = DOCS_DATA_DIR):
     return vector_store
 
 
-def init_llm():
+def init_llm(local_path = LLM_MODEL_PATH):
     start_time = time.time()
 
     llm = ChatGLM()
-    llm.load_model(model_name_or_path = model_config.llm_model_dict[model_config.LLM_MODEL],
+
+    if local_path is not None:
+        llm.load_model(model_name_or_path = local_path,
+                    llm_device = model_config.LLM_DEVICE,
+                    use_ptuning_v2 = model_config.USE_PTUNING_V2)
+    else:
+        llm.load_model(model_name_or_path = model_config.llm_model_dict[model_config.LLM_MODEL],
                 llm_device = model_config.LLM_DEVICE,
                 use_ptuning_v2 = model_config.USE_PTUNING_V2)
     llm.history_len = LLM_HISTORY_LEN
