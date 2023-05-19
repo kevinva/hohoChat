@@ -21,7 +21,7 @@ from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.document_loaders import UnstructuredMarkdownLoader
 
-VECTOR_STORE_PATH = "/root/hoho/outputs/vector_store/law_FAISS_20210914110909"
+VECTOR_STORE_PATH = "/root/hoho/outputs/vector_store/law_FAISS_20230519110529"
 DOCS_DATA_DIR = "/root/hoho/data/Laws-master/"
 LLM_MODEL_PATH = "/root/hoho/models/chatglm-6b-int4/"
 
@@ -49,8 +49,11 @@ def get_filepaths_at_path(item_path):
 def init_vector_store(vs_path = None, docs_path = DOCS_DATA_DIR):
     start_time = time.time()
 
+    embeddings = HuggingFaceEmbeddings(model_name = model_config.embedding_model_dict["ernie-base"], 
+                                       model_kwargs = {'device': model_config.EMBEDDING_DEVICE})
+
     if vs_path is not None:
-        vector_store = FAISS.load_local(vs_path)
+        vector_store = FAISS.load_local(vs_path, embeddings)
         print(f"[hoho] vector_store loaded from {vs_path} successfully! Elapsed time: {time.time() - start_time} seconds")
         return vector_store
 
@@ -68,9 +71,6 @@ def init_vector_store(vs_path = None, docs_path = DOCS_DATA_DIR):
         docs += loader.load_and_split(text_splitter)
 
     print(f"[hoho] Number of docs: {len(docs)}")
-
-    embeddings = HuggingFaceEmbeddings(model_name = model_config.embedding_model_dict["ernie-base"], 
-                                       model_kwargs = {'device': model_config.EMBEDDING_DEVICE})
     
     vector_store = FAISS.from_documents(docs, embeddings)
 
@@ -107,7 +107,7 @@ def init_llm(local_path = LLM_MODEL_PATH):
     return llm
 
 
-g_vector_store = init_vector_store()
+g_vector_store = init_vector_store(vs_path = VECTOR_STORE_PATH)
 g_llm = init_llm()
 
 
