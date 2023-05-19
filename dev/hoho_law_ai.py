@@ -21,8 +21,8 @@ from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.document_loaders import UnstructuredMarkdownLoader
 
-
-DATA_DIR = "/root/hoho/data/Laws-master/"
+VECTOR_STORE_PATH = "/root/hoho/outputs/vector_store/law_FAISS_20210914110909"
+DOCS_DATA_DIR = "/root/hoho/data/Laws-master/"
 LLM_MODEL_PATH = "/root/hoho/models/chatglm-6b-int4/"
 
 
@@ -46,8 +46,15 @@ def get_filepaths_at_path(item_path):
     return result_list
 
 
-def init_vector_store():
-    file_paths = get_filepaths_at_path(DATA_DIR)
+def init_vector_store(vs_path = None, docs_path = DOCS_DATA_DIR):
+    start_time = time.time()
+
+    if vs_path is not None:
+        vector_store = FAISS.load_local(vs_path)
+        print(f"[hoho] vector_store loaded from {vs_path} successfully! Elapsed time: {time.time() - start_time} seconds")
+        return vector_store
+
+    file_paths = get_filepaths_at_path(docs_path)
     file_paths = [file_path for file_path in file_paths if os.path.basename(file_path) != '_index.md']
 
     print(f"[hoho] Nmber of file_paths: {len(file_paths)}")
@@ -75,19 +82,21 @@ def init_vector_store():
     FAISS.similarity_search_with_score_by_vector = similarity_search_with_score_by_vector
     vector_store.chunk_size = model_config.CHUNK_SIZE
 
-    print("[hoho] Initial vector_store successfully!")
+    print(f"[hoho] Initial vector_store successfully! Elapsed time: {time.time() - start_time} seconds")
 
     return vector_store
 
 
 def init_llm():
+    start_time = time.time()
+
     llm = ChatGLM()
     llm.load_model(model_name_or_path = model_config.llm_model_dict[model_config.LLM_MODEL],
                 llm_device = model_config.LLM_DEVICE,
                 use_ptuning_v2 = model_config.USE_PTUNING_V2)
     llm.history_len = LLM_HISTORY_LEN
 
-    print("[hoho] Initial llm successfully!")
+    print(f"[hoho] Initial llm successfully! Elapsed time: {time.time() - start_time} seconds")
 
     return llm
 
