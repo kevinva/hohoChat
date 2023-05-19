@@ -50,7 +50,7 @@ def init_vector_store():
     file_paths = get_filepaths_at_path(DATA_DIR)
     file_paths = [file_path for file_path in file_paths if os.path.basename(file_path) != '_index.md']
 
-    print(f"hoho: number of file_paths: {len(file_paths)}")
+    print(f"[hoho] Nmber of file_paths: {len(file_paths)}")
 
     # text_splitter = ChineseTextSplitter(pdf = False)
     text_splitter = MarkdownTextSplitter(chunk_size = model_config.CHUNK_SIZE , chunk_overlap = 100)
@@ -60,7 +60,7 @@ def init_vector_store():
         loader = UnstructuredMarkdownLoader(file_path)
         docs += loader.load_and_split(text_splitter)
 
-    print(f"hoho: number of docs: {len(docs)}")
+    print(f"[hoho] Number of docs: {len(docs)}")
 
     embeddings = HuggingFaceEmbeddings(model_name = model_config.embedding_model_dict["ernie-base"], 
                                        model_kwargs = {'device': model_config.EMBEDDING_DEVICE})
@@ -70,12 +70,12 @@ def init_vector_store():
     vs_path = f"/root/hoho/outputs/vector_store/law_FAISS_{time_str_YmdHmS()}"
     vector_store.save_local(vs_path)
 
-    print(f"hoho: vector_store saved to {vs_path}")
+    print(f"[hoho] vector_store saved to {vs_path}")
 
     FAISS.similarity_search_with_score_by_vector = similarity_search_with_score_by_vector
     vector_store.chunk_size = model_config.CHUNK_SIZE
 
-    print("hoho: Initial vector_store successfully!")
+    print("[hoho] Initial vector_store successfully!")
 
     return vector_store
 
@@ -87,7 +87,7 @@ def init_llm():
                 use_ptuning_v2 = model_config.USE_PTUNING_V2)
     llm.history_len = LLM_HISTORY_LEN
 
-    print("hoho: Initial llm successfully!")
+    print("[hoho] Initial llm successfully!")
 
     return llm
 
@@ -129,7 +129,7 @@ def main():
     # question = "信用卡欠款不还会遭到什么处罚？"
     # answer, history = display_answer(question, history = [])
 
-    print("hoho: main()")
+    print("[hoho] main()")
 
 
 
