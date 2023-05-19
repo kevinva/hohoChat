@@ -26,6 +26,26 @@ DATA_DIR = "/root/hoho/data/Laws-master/"
 LLM_MODEL_PATH = "/root/hoho/models/chatglm-6b-int4/"
 
 
+def time_str_YmdHmS():
+    current_time = time.time()
+    local_time = time.localtime(current_time)
+    time_str = time.strftime('%Y%m%d%H%m%S', local_time)
+    return time_str
+
+
+def get_filepaths_at_path(item_path):
+    if os.path.isfile(item_path):
+        return [item_path]
+    
+    result_list = []
+    for item in os.listdir(item_path):
+        path = os.path.join(item_path, item)
+        file_paths = get_filepaths_at_path(path)
+        result_list.extend(file_paths)
+    
+    return result_list
+
+
 def init_vector_store():
     file_paths = get_filepaths_at_path(DATA_DIR)
     file_paths = [file_path for file_path in file_paths if os.path.basename(file_path) != '_index.md']
@@ -74,26 +94,6 @@ def init_llm():
 
 g_vector_store = init_vector_store()
 g_llm = init_llm()
-
-
-def time_str_YmdHmS():
-    current_time = time.time()
-    local_time = time.localtime(current_time)
-    time_str = time.strftime('%Y%m%d%H%m%S', local_time)
-    return time_str
-
-
-def get_filepaths_at_path(item_path):
-    if os.path.isfile(item_path):
-        return [item_path]
-    
-    result_list = []
-    for item in os.listdir(item_path):
-        path = os.path.join(item_path, item)
-        file_paths = get_filepaths_at_path(path)
-        result_list.extend(file_paths)
-    
-    return result_list
 
 
 def answer_based_on_knowledge(query, history = []):
