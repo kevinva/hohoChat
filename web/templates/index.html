@@ -28,22 +28,20 @@
     </style>
 </head>
 <body>
-    <h1>刷新数据示例</h1>
+    <h1>AI法律助手Demo</h1>
     
     <form id="data-form">
-        <label for="name">姓名:</label>
-        <input type="text" id="name" name="name" value="{{ data['name'] }}"><br><br>
-
-        <label for="age">年龄:</label>
-        <input type="text" id="age" name="age" value="{{ data['age'] }}"><br><br>
+        <label for="question">问:</label>
+        <input type="text" id="question" name="question" value="{{ data['question'] }}"><br><br>
 
         <input type="submit" value="提交">
     </form>
-
+    <br>
+    <br>
     <div id="result">
         <!-- 这里将显示刷新后的数据 -->
-        姓名: {{ data['name'] }}<br>
-        年龄: {{ data['age'] }}
+        我：{{ data['question'] }}<br>
+        AI法律助手: {{ data['answer'] }}
     </div>
 
     <div id="loading-overlay">
@@ -65,7 +63,7 @@
                     data: $(this).serialize(),
                     success: function(response) {
                         // 更新显示刷新后的数据
-                        $('#result').html('姓名: ' + response.name + '<br>年龄: ' + response.age);
+                        $('#result').html('我：' + response.question + '<br>AI法律助手: ' + response.answer);
                     },
                     complete: function() {
                         // 隐藏加载界面

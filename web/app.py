@@ -11,7 +11,7 @@ import hoho_law_ai_core as law_core
 app = Flask(__name__)
 
 g_chat_history = []  # hoho_todo
-g_data = {"answer": ""}
+g_data = {"question": "", "answer": ""}
 
 @app.route('/')
 def index():
@@ -23,6 +23,7 @@ def query():
     question = request.form['question']
     answer, history = law_core.display_answer(question, g_chat_history)
 
+    g_data["question"] = question
     g_data['answer'] = answer
 
     return jsonify(g_data)
