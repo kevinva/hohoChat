@@ -152,7 +152,7 @@ def main():
             break
         
         answer, history = display_answer(question, history = [])
-        
+        print(f"answer: {answer['result']}")
 
 
 if __name__ == "__main__":
