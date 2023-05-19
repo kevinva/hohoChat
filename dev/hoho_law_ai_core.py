@@ -107,8 +107,8 @@ def init_llm(local_path = LLM_MODEL_PATH):
     return llm
 
 
-# g_vector_store = init_vector_store(vs_path = VECTOR_STORE_PATH)
-# g_llm = init_llm()
+g_vector_store = init_vector_store(vs_path = VECTOR_STORE_PATH)
+g_llm = init_llm()
 
 
 def answer_based_on_knowledge(query, history = []):
