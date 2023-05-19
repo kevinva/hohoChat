@@ -144,14 +144,15 @@ def main():
     # question = "信用卡欠款不还会遭到什么处罚？"
     # answer, history = display_answer(question, history = [])
 
-    print("[hoho] main()")
+    print("[hoho] main called!")
 
     while True:
         question = input("请输入问题：(输入'qiut'退出)")
         if question == "quit":
             break
-        else:
-            print(f"[hoho] question: {question}")
+        
+        answer, history = display_answer(question, history = [])
+        
 
 
 if __name__ == "__main__":
