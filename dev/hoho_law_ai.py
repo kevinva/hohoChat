@@ -22,8 +22,8 @@ from langchain.vectorstores import FAISS
 from langchain.document_loaders import UnstructuredMarkdownLoader
 
 
-DATA_DIR = "H:\AI\data\法律\法律法规文件\Laws-master"
-
+DATA_DIR = "/root/hoho/data/Laws-master/"
+LLM_MODEL_PATH = "/root/hoho/models/chatglm-6b-int4/"
 
 
 def init_vector_store():
@@ -47,13 +47,15 @@ def init_vector_store():
     
     vector_store = FAISS.from_documents(docs, embeddings)
 
-    vs_path = f"../outputs/vector_store/law_FAISS_{time_str_YmdHmS()}"
+    vs_path = f"/root/hoho/outputs/vector_store/law_FAISS_{time_str_YmdHmS()}"
     vector_store.save_local(vs_path)
 
     print(f"hoho: vector_store saved to {vs_path}")
 
     FAISS.similarity_search_with_score_by_vector = similarity_search_with_score_by_vector
     vector_store.chunk_size = model_config.CHUNK_SIZE
+
+    print("hoho: Initial vector_store successfully!")
 
     return vector_store
 
@@ -64,6 +66,8 @@ def init_llm():
                 llm_device = model_config.LLM_DEVICE,
                 use_ptuning_v2 = model_config.USE_PTUNING_V2)
     llm.history_len = LLM_HISTORY_LEN
+
+    print("hoho: Initial llm successfully!")
 
     return llm
 
@@ -122,8 +126,10 @@ def display_answer(query, history = []):
 
 
 def main():
-    question = "信用卡欠款不还会遭到什么处罚？"
-    answer, history = display_answer(question, history = [])
+    # question = "信用卡欠款不还会遭到什么处罚？"
+    # answer, history = display_answer(question, history = [])
+
+    print("hoho: main()")
 
 
 
