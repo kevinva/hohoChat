@@ -1,5 +1,5 @@
 """
-URL configuration for server project.
+URL configuration for mysite project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -15,20 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-
-
-router = DefaultRouter()
-
+from django.urls import path
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-
-    # 用户模块
-    path("users/", include("users.urls")),
-
-    path("demo/", include("demo.urls")),
-
-    path('', include(router.urls))
+    path('admin/', admin.site.urls),
 ]

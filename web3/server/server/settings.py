@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-yl4(8768^j@=&_03+-qk5$u&e3gnb2$ma_+=d#p3m5rdr=9862"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'rest_framework',
+    'users',
+    'demo',
 ]
 
 MIDDLEWARE = [
@@ -137,7 +139,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),              # token有效时长
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),               # 刷新token有效时长
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),              # token有效时长
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),               # 刷新token有效时长
     'ROTATE_REFRESH_TOKENS': False,                             # 设置为true时，每次刷新token时都会更新refresh
 }
