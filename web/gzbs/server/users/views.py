@@ -8,26 +8,23 @@ from rest_framework import status
 from rest_framework import permissions
 from .serializers import MyTokenSerializer
 
-# hoho_todo
-def listShops(requests):
-    return HttpResponse("this is shop list")
 
 class DetailsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.JWTAuthentication]
 
     def get(self, request, *args, **kwargs):
-        print(f"authenticate: {request.successful_authenticator.authenticate(request)}")
-
         header = request.successful_authenticator.get_header(request)
         raw_token = request.successful_authenticator.get_raw_token(header)
         validated_token = request.successful_authenticator.get_validated_token(raw_token)
-        print(f"token信息：{validated_token}")
-        print(f"登录用户：{request.successful_authenticator.get_user(validated_token)}")
+        user_logined = request.successful_authenticator.get_user(validated_token)
+        print(f'[hoho: DetailsView-get] token: {validated_token}, user: {user_logined}')
 
         return Response("get ok")
     
     def post(self, request, *args, **kwargs):
+        print(f'[hoho: DetailsView-post] request: {request.data}, args: {args}, kwargs: {kwargs}')
+
         return Response("post ok")
     
 
@@ -35,11 +32,9 @@ class LoginView(TokenViewBase):
     serializer_class = MyTokenSerializer
 
     def post(self, request, *args, **kwargs):
-        # print(f'hoho: request: {request.data}')
+        print(f'[hoho: LoginView-post] request: {request.data},  args: {args}, kwargs: {kwargs}')
+
         serializer = self.get_serializer(data = request.data)
-
-        # print(f'hoho: serializer: {serializer}')
-
 
         try:
             serializer.is_valid(raise_exception = True)
