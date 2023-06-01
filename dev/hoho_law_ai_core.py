@@ -16,6 +16,7 @@ from chains.local_doc_qa import *
 from textsplitter import ChineseTextSplitter
 from utils import torch_gc
 
+
 from langchain.text_splitter import MarkdownTextSplitter, CharacterTextSplitter
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
@@ -24,6 +25,7 @@ from langchain.document_loaders import UnstructuredMarkdownLoader
 VECTOR_STORE_PATH = "/root/hoho/outputs/vector_store/law_FAISS_20230519110529"
 DOCS_DATA_DIR = "/root/hoho/data/Laws-master/"
 LLM_MODEL_PATH = "/root/hoho/models/chatglm-6b-int4/"
+EMBEDDING_MODEL_PATH = "/root/hoho/models/embeddings/ms"
 
 
 def time_str_YmdHmS():
@@ -46,16 +48,23 @@ def get_filepaths_at_path(item_path):
     return result_list
 
 
-def init_vector_store(vs_path = None, docs_path = DOCS_DATA_DIR):
+def init_vector_store(vs_path = None, docs_path = None):
     start_time = time.time()
 
+    # embeddings = HuggingFaceEmbeddings(model_name = EMBEDDING_MODEL_PATH, 
+    #                                    model_kwargs = {'device': model_config.EMBEDDING_DEVICE})
     embeddings = HuggingFaceEmbeddings(model_name = model_config.embedding_model_dict["ernie-base"], 
                                        model_kwargs = {'device': model_config.EMBEDDING_DEVICE})
+
 
     if vs_path is not None:
         vector_store = FAISS.load_local(vs_path, embeddings)
         print(f"[hoho] vector_store loaded from {vs_path} successfully! Elapsed time: {time.time() - start_time} seconds")
         return vector_store
+    
+    if docs_path is None:
+        print(f"[hoho] docs_path is None!")
+        return None
 
     file_paths = get_filepaths_at_path(docs_path)
     file_paths = [file_path for file_path in file_paths if os.path.basename(file_path) != '_index.md']
@@ -107,7 +116,7 @@ def init_llm(local_path = LLM_MODEL_PATH):
     return llm
 
 
-g_vector_store = init_vector_store(vs_path = VECTOR_STORE_PATH)
+g_vector_store = init_vector_store(vs_path = VECTOR_STORE_PATH, docs_path = DOCS_DATA_DIR)
 g_llm = init_llm()
 
 

@@ -30,5 +30,7 @@ urlpatterns = [
 
     path("demo/", include("demo.urls")),
 
+    path("predict/", include("predict.urls")),
+
     path('', include(router.urls))
 ]

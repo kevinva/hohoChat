@@ -36,4 +36,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    print(f'main: cuda = {torch.cuda.is_available()}, cudnn = {torch.backends.cudnn.enabled}')
