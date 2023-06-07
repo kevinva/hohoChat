@@ -2,7 +2,7 @@ import os
 import sys
 import time
 
-dev_root = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "dev")
+dev_root = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))), "dev")
 sys.path.append(dev_root)
 
 from flask import Flask, render_template, request, jsonify
