@@ -51,9 +51,11 @@ def get_filepaths_at_path(item_path):
 def init_vector_store(vs_path = None, docs_path = None):
     start_time = time.time()
 
+    embedding_model_name = model_config.embedding_model_dict["ernie-base"]
+
     embeddings = HuggingFaceEmbeddings(model_name = EMBEDDING_MODEL_PATH, 
                                        model_kwargs = {'device': model_config.EMBEDDING_DEVICE})
-    # embeddings = HuggingFaceEmbeddings(model_name = model_config.embedding_model_dict["ernie-base"], 
+    # embeddings = HuggingFaceEmbeddings(model_name = embedding_model_name, 
     #                                    model_kwargs = {'device': model_config.EMBEDDING_DEVICE})
 
 
@@ -83,7 +85,7 @@ def init_vector_store(vs_path = None, docs_path = None):
     
     vector_store = FAISS.from_documents(docs, embeddings)
 
-    vs_path = f"/root/hoho/outputs/vector_store/law_FAISS_{time_str_YmdHmS()}"
+    vs_path = f"/root/hoho/outputs/vector_store/law_FAISS_{embedding_model_name}_{time_str_YmdHmS()}"
     vector_store.save_local(vs_path)
 
     print(f"[hoho] vector_store saved to {vs_path}")
