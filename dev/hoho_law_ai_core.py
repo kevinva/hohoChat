@@ -25,7 +25,7 @@ from langchain.document_loaders import UnstructuredMarkdownLoader
 VECTOR_STORE_PATH = "/root/hoho/outputs/vector_store/law_FAISS_20230519110529"
 DOCS_DATA_DIR = "/root/hoho/data/Laws-master/"
 LLM_MODEL_PATH = "/root/hoho/models/chatglm-6b-int4/"
-EMBEDDING_MODEL_PATH = "/root/hoho/models/embeddings/ms"
+EMBEDDING_MODEL_PATH = "/root/hoho/models/embeddings/ernie-3.0-base-zh"
 
 
 def time_str_YmdHmS():
@@ -118,7 +118,7 @@ def init_llm(local_path = LLM_MODEL_PATH):
     return llm
 
 
-g_vector_store = init_vector_store(vs_path = None, docs_path = DOCS_DATA_DIR)
+g_vector_store = init_vector_store(vs_path = VECTOR_STORE_PATH, docs_path = DOCS_DATA_DIR)
 g_llm = init_llm()
 
 
