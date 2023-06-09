@@ -31,7 +31,8 @@ EMBEDDING_MODEL_PATH = "/root/hoho/models/embeddings/ernie-3.0-base-zh"
 def time_str_YmdHmS():
     current_time = time.time()
     local_time = time.localtime(current_time)
-    time_str = time.strftime('%Y%m%d%H%m%S', local_time)
+    time_str = time.strftime('%Y%m%d%H%M%S', local_time)
+    time
     return time_str
 
 
