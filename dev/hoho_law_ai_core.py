@@ -28,7 +28,7 @@ LLM_MODEL_PATH = "/root/hoho/models/chatglm-6b-int4/"
 EMBEDDING_MODEL_PATH = "/root/hoho/models/embeddings/ernie-3.0-base-zh"
 
 
-def time_str_YmdHmS():
+def time_str_YmdHMS():
     current_time = time.time()
     local_time = time.localtime(current_time)
     time_str = time.strftime('%Y%m%d%H%M%S', local_time)
@@ -86,7 +86,7 @@ def init_vector_store(vs_path = None, docs_path = None):
     
     vector_store = FAISS.from_documents(docs, embeddings)
 
-    vs_path = f"/root/hoho/outputs/vector_store/law_FAISS_{embedding_model_name}_{time_str_YmdHmS()}"
+    vs_path = f"/root/hoho/outputs/vector_store/law_FAISS_{embedding_model_name}_{time_str_YmdHMS()}"
     vector_store.save_local(vs_path)
 
     print(f"[hoho] vector_store saved to {vs_path}")
