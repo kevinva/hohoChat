@@ -14,9 +14,9 @@ from langchain.vectorstores import FAISS
 from langchain.document_loaders import UnstructuredPDFLoader
 
 
-LOG_PREFIX = "[glm]"
+LOG_PREFIX = "[GLM]"
 VECTOR_STORE_PATH = "/root/autodl-tmp/outputs/vector_stores/GLM_FAISS_20230519110529"
-DOCS_DATA_DIR = "/root/autodl-tmp/data/track2-demo/"
+DOCS_DATA_DIR = "/root/autodl-tmp/data/track2/"
 LLM_MODEL_PATH = "/root/autodl-tmp/models/chatglm-6b/"
 EMBEDDING_MODEL_PATH = "/root/autodl-tmp/models/multi-qa-mpnet-base-dot-v1"
 
