@@ -32,8 +32,8 @@ from hoho_huggingface import HohoHuggingFaceEmbeddings
 
 LOG_PREFIX = "[CAN_ECONOMIC]"
 DOCS_DATA_PATH = "../data/test_doc.pdf"
-LLM_MODEL_PATH = "../models/chatglm2-6b-int4"
-EMBEDDING_MODEL_PATH = "../models/multi-qa-mpnet-base-dot-v1"
+LLM_MODEL_PATH = "/root/autodl-tmp/models/chatglm2-6b-int4"
+EMBEDDING_MODEL_PATH = "/root/autodl-tmp/models/multi-qa-mpnet-base-dot-v1"
 
 PROMPT_TEMPLATE = """
 ###{content}###
