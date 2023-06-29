@@ -4,7 +4,7 @@ import json
 import re
 
 # 放在所有访问GPU代码之前（作为从卡，window要设置这个才行）
-# os.environ['CUDA_VISIBLE_DEVICES']='1' 
+os.environ['CUDA_VISIBLE_DEVICES']='1' 
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:128"  # window要设置这个，否则会即使显存够也会出现OOM错误
 
 langchain_ChatGLM_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "langchain-ChatGLM-master")
@@ -18,7 +18,7 @@ from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.document_loaders import UnstructuredPDFLoader, DirectoryLoader, TextLoader
 from langchain.schema import Document
-
+from PyPDF2 import PdfReader
 
 # langchain-ChatGLM-master模块
 from configs import model_config
@@ -31,14 +31,17 @@ from hoho_huggingface import HohoHuggingFaceEmbeddings
 
 
 LOG_PREFIX = "[CAN_ECONOMIC]"
-DOCS_DATA_PATH = "../data/test_doc.pdf"
-LLM_MODEL_PATH = "/root/autodl-tmp/models/chatglm2-6b-int4"
-EMBEDDING_MODEL_PATH = "/root/autodl-tmp/models/multi-qa-mpnet-base-dot-v1"
+# DOCS_DATA_PATH = "../data/test_doc.pdf"
+# LLM_MODEL_PATH = "/root/autodl-tmp/models/chatglm2-6b-int4"
+# EMBEDDING_MODEL_PATH = "/root/autodl-tmp/models/multi-qa-mpnet-base-dot-v1"
+DOCS_DATA_PATH = "../data/can_economic.pdf"
+LLM_MODEL_PATH = r"H:\AI\LLMs\chatglm-6b-int4"
+EMBEDDING_MODEL_PATH = r"H:\AI\embedding_models\multi-qa-mpnet-base-dot-v1"
 
+
+# 要声明“提取"信息"(keyword,content)”，返回结果才不会啰嗦（直接返回json。怪了！）
 PROMPT_TEMPLATE = """
-###{content}###
-
-从上文中，提取"指标名称"、"指标值"、"数值单位"、"数据期"等类型的实体，以json列表形式输出提取结果。
+{content}\n\n从上文中，提取"信息"(keyword,content)，包括："指标名称"、"指标值"、"数值单位"、"数据期"的实体，注意这些实体是一一对应的关系。输出json格式内容。
 """
 
 
@@ -58,14 +61,24 @@ def init_knowledge_based(docs_path = None, embedding_model_path = None):
     if docs_path is None:
         print(f"{LOG_PREFIX}[{logTime()}] docs_path is None!")
         return None
+    
+    text_splitter = TokenTextSplitter(chunk_size = 250, chunk_overlap = 0, disallowed_special = ())
 
-    loader = UnstructuredPDFLoader(docs_path)
-    data = loader.load()
-    print(f"{LOG_PREFIX}[{logTime()}] Document's len: {len(data[0].page_content)}")
+    reader = PdfReader(DOCS_DATA_PATH)
+    raw_text = ""
+    for i, page in enumerate(reader.pages):
+        text = page.extract_text()
+        if text:
+            raw_text += text
+            # print(f"page {i}, len: {len(text)}")
 
-    text_splitter = TokenTextSplitter(chunk_size = 2000, chunk_overlap = 0, disallowed_special = ())
-    docs = []
-    docs += loader.load_and_split(text_splitter)
+    docs = text_splitter.split_text(raw_text)
+
+    # loader = UnstructuredPDFLoader(docs_path)
+    # data = loader.load()
+    # print(f"{LOG_PREFIX}[{logTime()}] Document's len: {len(data[0].page_content)}")
+    # docs = []
+    # docs += loader.load_and_split(text_splitter)
 
     print(f"{LOG_PREFIX}[{logTime()}] Number of chunks: {len(docs)}")
     print(f"{LOG_PREFIX}[{logTime}] Load knowledge done! Elapsed time: {time.time() - start_time} seconds")
@@ -127,10 +140,9 @@ def main():
     result_list = []
     for i, doc in enumerate(g_docs):
         print(f"###### doc {i} ######")
-        if contains_arabic_numbers(doc.page_content):
-            result_list.append(get_answer(doc.page_content))
-        else:
-            print("skip!")
+        answer = get_answer(doc)
+        print(f"{LOG_PREFIX}[{logTime()}] answer: {answer}")
+        result_list.append(answer)
     
     output_file = "../outputs/result_json.txt"
     result_str = "\n\n\n\n\n\n".join(result_list)
