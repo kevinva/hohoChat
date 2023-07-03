@@ -106,13 +106,13 @@ def init_llm(local_path = None):
     return llm
 
 
-print(f"{LOG_PREFIX}[{logTime()}] Initializing knowledge...", flush = True)
-g_docs = init_knowledge_based(docs_path = DOCS_DATA_PATH, embedding_model_path = EMBEDDING_MODEL_PATH)
-print(f"{LOG_PREFIX}[{logTime()}] Initializing knowledge successfully!", flush = True)
+# print(f"{LOG_PREFIX}[{logTime()}] Initializing knowledge...", flush = True)
+# g_docs = init_knowledge_based(docs_path = DOCS_DATA_PATH, embedding_model_path = EMBEDDING_MODEL_PATH)
+# print(f"{LOG_PREFIX}[{logTime()}] Initializing knowledge successfully!", flush = True)
 
-print(f"{LOG_PREFIX}[{logTime()}] Initializing llm...", flush = True)
-g_llm = init_llm(local_path = LLM_MODEL_PATH)
-print(f"{LOG_PREFIX}[{logTime()}] Initializing llm successfully!", flush = True)
+# print(f"{LOG_PREFIX}[{logTime()}] Initializing llm...", flush = True)
+# g_llm = init_llm(local_path = LLM_MODEL_PATH)
+# print(f"{LOG_PREFIX}[{logTime()}] Initializing llm successfully!", flush = True)
 
 
 
@@ -136,6 +136,40 @@ def get_answer(query):
     return final_result
 
 
+def parse_result_json():
+    file_path = "../outputs/result_json.txt"
+    with open(file_path, "r", encoding = "utf-8") as f:
+        result_json = f.read()
+        chunks = result_json.split("\n\n\n\n\n\n")
+        dict_list = []
+        for i, chunk in enumerate(chunks):
+            chunk = chunk.strip()
+            try:
+                # 可解标准的jsonlines形式
+                pattern = r"\s+"   # 匹配任意空白字符
+                replacement = ""
+                result = re.sub(pattern, replacement, chunk)
+                json_lines = result[1: len(result) - 1].split("}\n\n{")
+                print(f"lines: {len(json_lines)}")
+
+                if len(json_lines) == 2:
+                    print(f"2. {result}")
+
+                for line in json_lines:
+                    dict_list.append(json.loads("{" + line + "}"))
+
+                if i == 10:
+                    break
+            except Exception as e:
+                print(f"Error: {e}")
+                print(f"chunk: {chunk}")
+
+                
+
+                if i == 10:
+                    break
+                
+
 def main():
     result_list = []
     for i, doc in enumerate(g_docs):
@@ -151,4 +185,5 @@ def main():
     
 
 if __name__ == "__main__":
-    main()
+    # main()
+    parse_result_json()
