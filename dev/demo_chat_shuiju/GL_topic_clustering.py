@@ -98,12 +98,12 @@ for k,v in _topic_group.items():
         dict_topic[i] = k
 
 
-labels = [dict_topic[k] for k in topic]
-db_index = davies_bouldin_score(sentence_embeddings, labels)
+# labels = [dict_topic[k] for k in topic]
+# db_index = davies_bouldin_score(sentence_embeddings, labels)
 
-print(f'sentence_embeddings: {sentence_embeddings.shape}')
-print(f'labels: {len(labels)}')
-print(f'DBI: {db_index}')
+# print(f'sentence_embeddings: {sentence_embeddings.shape}')
+# print(f'labels: {len(labels)}')
+# print(f'DBI: {db_index}')
 
 topic_data['主题分类'] = [dict_topic[k] for k in topic]
 topic_data['最终主题'] = topic_data.groupby('主题分类')['主题'].transform(lambda x: x.iloc[x.str.len().argmin()])
