@@ -40,8 +40,8 @@ topic = [t.replace('主题：','').replace('客户关心的','')
 # 加载模型，将数据进行向量化处理
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
-model_name = 'hfl/chinese-roberta-wwm-ext'
-# model_name = "/root/autodl-tmp/models/sentence_pair_sim"
+# model_name = 'hfl/chinese-roberta-wwm-ext'
+model_name = "/root/autodl-tmp/models/sentence_pair_sim"
 model = SentenceTransformer(model_name)
 #sent_model/sentence_pair_sim/   hfl/chinese-roberta-wwm-ext
 
