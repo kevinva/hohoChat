@@ -100,7 +100,7 @@ for k,v in _topic_group.items():
 
 print(f"dict_topic: {Counter(dict_topic.values())}")
 
-clusterring = DBSCAN(eps = 3, min_samples = 10).fit(sentence_embeddings)
+clusterring = DBSCAN(eps = 13, min_samples = 100).fit(sentence_embeddings)
 print(f"clusterring labels: {Counter(clusterring.labels_)}")
 
 
