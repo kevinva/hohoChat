@@ -46,7 +46,6 @@ model = SentenceTransformer(model_name)
 #sent_model/sentence_pair_sim/   hfl/chinese-roberta-wwm-ext
 
 sentence_embeddings = model.encode(topic)
-print(f"sentence_embeddings: {sentence_embeddings.shape}")
 
 #采用AffinityPropagation 层次聚类
 # from sklearn.cluster import AffinityPropagation
@@ -100,7 +99,7 @@ for k,v in _topic_group.items():
 
 print(f"dict_topic: {len(dict_topic)}")
 
-clusterring = DBSCAN(eps = 13, min_samples = 100).fix(sentence_embeddings)
+clusterring = DBSCAN(eps = 13, min_samples = 100).fit(sentence_embeddings)
 print(f"clusterring labels: {clusterring.labels_}")
 
 
