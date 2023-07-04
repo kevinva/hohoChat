@@ -165,7 +165,7 @@ def main2():
             # query = '：请基于以下客服与客户对话，进行总结任务——客户关心的主题，总结字数在10个字以内，返回格式：主题：对应主题 对话如下："""" {}"""" '.format(costomer_say)
             # model.stream_chat(tokenizer, query, history=history)
             
-            query = PROMPT_TEMPLATE.format(customer_say)
+            query = PROMPT_TEMPLATE.format(customer_say = customer_say)
 
             #print('query',query)
             response, history = model.chat(tokenizer, query, history=[])
