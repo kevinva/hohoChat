@@ -181,6 +181,7 @@ def main2():
             file_path = f"./outputs/exception_对话主题总结_{logTime()}.xlsx"
             df.to_excel(file_path)
 
+            print(f"exception: {e}")
             print(f"exception while processing file：{path}")
 
             torch_gc(DEVICE)
