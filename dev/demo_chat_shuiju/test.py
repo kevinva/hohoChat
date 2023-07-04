@@ -104,6 +104,14 @@ from sklearn.cluster import KMeans
 ##########################################
 
 
-from collections import Counter
+# from collections import Counter
 
-print(Counter([1, 2, 2, 3, 4, 4, 4, 4, 2, 3, 7, 9]))
+# print(Counter([1, 2, 2, 3, 4, 4, 4, 4, 2, 3, 7, 9]))
+
+
+##########################################
+
+import random
+
+tt = ['咨询固定资产报废处理问题。', '咨询固定资产扣除问题。', '咨询固定资产简易计税问题。']
+print(random.choice(tt))
