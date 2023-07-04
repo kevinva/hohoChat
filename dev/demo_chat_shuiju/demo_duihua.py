@@ -9,7 +9,7 @@ from tqdm import tqdm
 import torch
 import torch.multiprocessing as mp
 
-MODEL_PATH = "/root/autodl-tmp/models/chatglm2-6b/"
+MODEL_PATH = "/root/autodl-tmp/models/chatglm-6b/"
 DATA_PATH = "/root/autodl-tmp/data/txt"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -125,17 +125,13 @@ def get_say(data_path):
             next_role = dialog_list[i + 1].split("|")[1]
 
             if next_role != cur_role:
-                #print(f"{cur_role}:{cur_dialog}")
-                #result.append(f"{cur_role}:{cur_dialog}")
-                result += f"{cur_role}:{cur_dialog} \n"
+                result += f"{cur_dialog} \n"
                 cur_role = ""
                 cur_dialog = ""
             else:
                 continue
         else:
-            #print(f"{cur_role}:{cur_dialog}")
-            #result.append(f"{cur_role}:{cur_dialog}")
-            result += f"{cur_role}:{cur_dialog} \n"
+            result += f"{cur_dialog} \n"
             cur_role = ""
             cur_dialog = ""
 
@@ -178,7 +174,7 @@ def main2():
             df = pd.DataFrame([q_r_dict]).T
             df = df.reset_index()
             df.columns = ['主题', '原对话']
-            file_path = f"./outputs/exception_对话主题总结_{logTime()}.xlsx"
+            file_path = f"./outputs/exception_topictask_{logTime()}.xlsx"
             df.to_excel(file_path)
 
             print(f"exception: {e}")
@@ -191,7 +187,7 @@ def main2():
     df = pd.DataFrame([q_r_dict]).T
     df = df.reset_index()
     df.columns = ['主题', '原对话']
-    file_path = f"./outputs/对话主题总结_{logTime()}.xlsx"
+    file_path = f"./outputs/topictask_{logTime()}.xlsx"
     df.to_excel(file_path)
     print('保存成功！！')
 
