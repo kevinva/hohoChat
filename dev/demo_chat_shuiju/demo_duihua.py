@@ -20,7 +20,7 @@ PROMPT_TEMPLATE = """
 """
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, trust_remote_code = True)
-model = AutoModel.from_pretrained(MODEL_PATH, trust_remote_code = True, device = 'cuda')
+model = AutoModel.from_pretrained(MODEL_PATH, trust_remote_code = True).half().cuda()
 model = model.eval()
 
 
