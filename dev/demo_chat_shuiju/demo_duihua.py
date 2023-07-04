@@ -16,7 +16,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 EXCEPTION_FILES = ["1025295.wav.txt"]
 
 PROMPT_TEMPLATE = """
-{customer_say}\n\n请对上文对话进行主题总结，要求简洁明晰，限制10个字以内。
+{customer_say}\n\n请对上文对话进行主题总结，要求简洁精要，限制10字以内。
 """
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, trust_remote_code = True)
