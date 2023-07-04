@@ -7,9 +7,10 @@ import pandas as pd
 import torch
 
 EMBEDDING_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+EMBEDDING_MODEL = "/root/autodl-tmp/models/sentence_pair_sim"
 
 # 用FAISS.from_documents 去加载文本
-topic_data = pd.read_excel(r'duihua_xlsx/对话主题总结_20230619213456.xlsx')
+topic_data = pd.read_excel('./outputs/topictask_20230704140642.xlsx')
 print('未删除空值前', topic_data.shape[0])
 topic_data = topic_data.dropna()
 print('删除空值后', topic_data.shape[0])
@@ -38,7 +39,7 @@ topic = [t.replace('主题：','').replace('客户关心的','')
 # 加载模型，将数据进行向量化处理
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
-model_name = 'sent_model/sentence_pair_sim/' #'hfl/chinese-roberta-wwm-ext'
+model_name = EMBEDDING_MODEL #'hfl/chinese-roberta-wwm-ext'
 model = SentenceTransformer(model_name)
 #sent_model/sentence_pair_sim/   hfl/chinese-roberta-wwm-ext
 
@@ -77,7 +78,7 @@ max_similarity = similarity_matrix.max(axis=1) # 每个词与其他所有词的�
 max_index = np.argmax(similarity_matrix, axis=1) # 每个词与其最相似的下标
 
 # 合并相似度大于等于阈值
-threshold = 0.87
+threshold = 0.7
 dsu = UnionFind(sentence_embeddings.shape[0])
 for i in range(sentence_embeddings.shape[0]):
     if max_similarity[i] >= threshold:
@@ -105,7 +106,6 @@ topic_data['原对话'].apply(lambda x:x.replace(
 
 #topic_data[['主题', '主题长度']].groupby(['主题长度']).min()
 topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(lambda x: x.iloc[x.str.len().argmin()])
-topic_data.to_excel(r'output_xlsx/主题分类-{}-{}.xlsx'.format(model_name.replace('/','_')
-                                                       ,threshold))
+topic_data.to_excel('./outputs/topicclassification-{}-{}.xlsx'.format(model_name.replace('/','_'), threshold))
 
 
