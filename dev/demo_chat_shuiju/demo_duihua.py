@@ -9,7 +9,7 @@ from tqdm import tqdm
 import torch
 import torch.multiprocessing as mp
 
-MODEL_PATH = "/root/autodl-tmp/models/chatglm-6b/"
+MODEL_PATH = "/root/autodl-tmp/models/chatglm2-6b/"
 DATA_PATH = "/root/autodl-tmp/data/txt"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
