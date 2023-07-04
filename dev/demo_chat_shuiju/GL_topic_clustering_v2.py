@@ -109,7 +109,8 @@ topic_data['原对话'].apply(lambda x:x.replace(
 
 def random_pick_topic(x):
     print(f"random_pick_topic: {x}")
-    return random.choice(x)
+    # return random.choice(x)
+    return x.iloc[x.str.len().argmin()]
 
 #topic_data[['主题', '主题长度']].groupby(['主题长度']).min()
 # topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(lambda x: x.iloc[x.str.len().argmin()])
