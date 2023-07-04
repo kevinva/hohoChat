@@ -3,6 +3,7 @@ from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain.document_loaders import UnstructuredMarkdownLoader, CSVLoader
 from langchain.text_splitter import MarkdownTextSplitter, CharacterTextSplitter ,TextSplitter
 
+import random
 import pandas as pd
 import torch
 
@@ -105,8 +106,14 @@ topic_data['原对话'].apply(lambda x:x.replace(
     '：请基于以下客服与客户对话，进行总结任务——客户关心的主题，总结字数在10个字以内，返回格式：主题：对应主题 对话如下：""""',
     ''))
 
+
+def random_pick_topic(x):
+    print(f"random_pick_topic: {x}")
+    return random.choice(x)
+
 #topic_data[['主题', '主题长度']].groupby(['主题长度']).min()
-topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(lambda x: x.iloc[x.str.len().argmin()])
+# topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(lambda x: x.iloc[x.str.len().argmin()])
+topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(random_pick_topic)
 topic_data.to_excel('./outputs/topicclassification-{}-{}.xlsx'.format(model_name.replace('/','_'), threshold))
 
 
