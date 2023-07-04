@@ -143,7 +143,6 @@ def main2():
     global stop_stream
     #print("欢迎使用 ChatGLM-6B 模型，输入内容即可进行对话，clear 清空对话历史，stop 终止程序")
     say_path_list = get_path_list()
-    say_path_list = say_path_list[:100]
     print('对话总通数：',len(say_path_list))
 
     t1 = time.time()
