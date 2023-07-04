@@ -6,11 +6,8 @@ from langchain.text_splitter import MarkdownTextSplitter, CharacterTextSplitter 
 import pandas as pd
 import torch
 
-from collections import Counter
-from sklearn.cluster import DBSCAN
 
 EMBEDDING_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
-EMBEDDING_MODEL = "/root/autodl-tmp/models/sentence_pair_sim"
 
 # 用FAISS.from_documents 去加载文本
 topic_data = pd.read_excel('./outputs/topictask_20230704140642.xlsx')
@@ -42,7 +39,8 @@ topic = [t.replace('主题：','').replace('客户关心的','')
 # 加载模型，将数据进行向量化处理
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
-model_name = EMBEDDING_MODEL #'hfl/chinese-roberta-wwm-ext'
+model_name = 'hfl/chinese-roberta-wwm-ext'
+# model_name = "/root/autodl-tmp/models/sentence_pair_sim"
 model = SentenceTransformer(model_name)
 #sent_model/sentence_pair_sim/   hfl/chinese-roberta-wwm-ext
 
@@ -98,22 +96,17 @@ for k,v in _topic_group.items():
     for i in v:
         dict_topic[i] = k
 
-print(f"dict_topic: {Counter(dict_topic.values())}")
 
-clusterring = DBSCAN(eps = 100, min_samples = 1000).fit(sentence_embeddings)
-print(f"clusterring labels: {Counter(clusterring.labels_)}")
+topic_data['主题分类'] = [dict_topic[k] for k in topic]
+topic_data['主题'] = topic
+topic_data['主题长度'] = topic_data['主题'].apply(lambda x:len(x))
+topic_data = topic_data[topic_data['主题长度'] <= 30]
+topic_data['原对话'].apply(lambda x:x.replace(
+    '：请基于以下客服与客户对话，进行总结任务——客户关心的主题，总结字数在10个字以内，返回格式：主题：对应主题 对话如下：""""',
+    ''))
 
-
-# topic_data['主题分类'] = [dict_topic[k] for k in topic]
-# topic_data['主题'] = topic
-# topic_data['主题长度'] = topic_data['主题'].apply(lambda x:len(x))
-# topic_data = topic_data[topic_data['主题长度'] <= 30]
-# topic_data['原对话'].apply(lambda x:x.replace(
-#     '：请基于以下客服与客户对话，进行总结任务——客户关心的主题，总结字数在10个字以内，返回格式：主题：对应主题 对话如下：""""',
-#     ''))
-
-# #topic_data[['主题', '主题长度']].groupby(['主题长度']).min()
-# topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(lambda x: x.iloc[x.str.len().argmin()])
-# topic_data.to_excel('./outputs/topicclassification-{}-{}.xlsx'.format(model_name.replace('/','_'), threshold))
+#topic_data[['主题', '主题长度']].groupby(['主题长度']).min()
+topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(lambda x: x.iloc[x.str.len().argmin()])
+topic_data.to_excel('./outputs/topicclassification-{}-{}.xlsx'.format(model_name.replace('/','_'), threshold))
 
 
