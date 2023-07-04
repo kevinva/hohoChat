@@ -108,7 +108,7 @@ topic_data['原对话'].apply(lambda x:x.replace(
 
 
 def random_pick_topic(x):
-    print(f"random_pick_topic: {x}")
+    print(f"random_pick_topic: {x.values}")
     # return random.choice(x)
     return x.iloc[x.str.len().argmin()]
 
