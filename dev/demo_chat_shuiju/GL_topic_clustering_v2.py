@@ -6,6 +6,7 @@ from langchain.text_splitter import MarkdownTextSplitter, CharacterTextSplitter 
 import pandas as pd
 import torch
 
+from collections import Counter
 from sklearn.cluster import DBSCAN
 
 EMBEDDING_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
@@ -97,10 +98,10 @@ for k,v in _topic_group.items():
     for i in v:
         dict_topic[i] = k
 
-print(f"dict_topic: {len(dict_topic)}")
+print(f"dict_topic: {Counter(dict_topic.values())}")
 
-clusterring = DBSCAN(eps = 13, min_samples = 100).fit(sentence_embeddings)
-print(f"clusterring labels: {clusterring.labels_}")
+clusterring = DBSCAN(eps = 3, min_samples = 10).fit(sentence_embeddings)
+print(f"clusterring labels: {Counter(clusterring.labels_)}")
 
 
 # topic_data['主题分类'] = [dict_topic[k] for k in topic]
