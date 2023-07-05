@@ -87,6 +87,16 @@ similarity_matrix = util.pytorch_cos_sim(sentence_embeddings, sentence_embedding
 similarity_matrix = similarity_matrix.to('cpu').numpy()
 
 
+from simhash import Simhash
+
+simhash_list = [Simhash(t) for t in topic]
+similarity_mat = np.zeros((len(simhash_list), len(simhash_list)))
+for i in range(len(simhash_list)):
+    for j in range(len(simhash_list)):
+        similarity_mat[i][j] = simhash_list[i].distance(simhash_list[j])
+
+print(f"similarity_mat: {similarity_mat}")
+
 mask = 1 - np.eye(similarity_matrix.shape[0]) # 使用掩码将对角线元素清0
 similarity_matrix = similarity_matrix * mask
 max_similarity = similarity_matrix.max(axis=1) # 每个词与其他所有词的最大相似度
