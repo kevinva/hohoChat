@@ -51,6 +51,7 @@ topic = result_list
 #从sentence_transformers 进行加载
 # 加载模型，将数据进行向量化处理
 from sentence_transformers import SentenceTransformer, util
+from transformers import AutoTokenizer
 import numpy as np
 # model_name = 'hfl/chinese-roberta-wwm-ext'
 model_name = "/root/autodl-tmp/models/sentence_pair_sim"
@@ -59,6 +60,8 @@ model = SentenceTransformer(model_name)
 #sent_model/sentence_pair_sim/   hfl/chinese-roberta-wwm-ext
 
 sentence_embeddings = model.encode(topic)
+tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code = True)
+print(f"tokenize：{tokenizer.tokenize(topic[:10])}")
 
 #采用AffinityPropagation 层次聚类
 # from sklearn.cluster import AffinityPropagation
@@ -85,17 +88,6 @@ class UnionFind():
 #计算两两相似度
 similarity_matrix = util.pytorch_cos_sim(sentence_embeddings, sentence_embeddings) # 计算余弦相似度矩阵
 similarity_matrix = similarity_matrix.to('cpu').numpy()
-
-
-from simhash import Simhash
-
-simhash_list = [Simhash(t) for t in topic]
-similarity_mat = np.zeros((len(simhash_list), len(simhash_list)))
-for i in range(len(simhash_list)):
-    for j in range(len(simhash_list)):
-        similarity_mat[i][j] = simhash_list[i].distance(simhash_list[j])
-
-print(f"similarity_mat: {similarity_mat}")
 
 mask = 1 - np.eye(similarity_matrix.shape[0]) # 使用掩码将对角线元素清0
 similarity_matrix = similarity_matrix * mask
@@ -138,6 +130,6 @@ def random_pick_topic(x):
 #topic_data[['主题', '主题长度']].groupby(['主题长度']).min()
 topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(lambda x: x.iloc[x.str.len().argmin()])
 # topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(random_pick_topic)
-topic_data.to_excel('./outputs/topicclassification-{}-{}.xlsx'.format(model_name.replace('/','_'), threshold))
+topic_data.to_excel('./outputs/topicclassification-{}-{}-{}.xlsx'.format(model_name.replace('/','_'), threshold, logTime()))
 
 
