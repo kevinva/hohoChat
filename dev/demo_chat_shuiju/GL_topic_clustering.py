@@ -20,6 +20,18 @@ print('删除空值后', topic_data.shape[0])
 topic = [t.replace('主题：','').replace('客户关心的','')
          for t in topic_data['主题']]
 
+result_list = []
+for text in topic:
+    result = text
+    if text.startswith('关于') or text.startswith("咨询") or text.startswith("探讨"):
+        result = result[2:]
+    if text.endswith("问题"):
+        result = result[:-2]
+    if text.endswith("问题。"):
+        result = result[:-3]
+    result_list.append(result)
+topic = result_list
+
 
 # embeddings = HuggingFaceEmbeddings(model_name = "nghuyong/ernie-3.0-base-zh",
 #                                    model_kwargs={'device': EMBEDDING_DEVICE})
