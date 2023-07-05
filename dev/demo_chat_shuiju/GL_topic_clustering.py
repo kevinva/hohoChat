@@ -95,7 +95,7 @@ max_similarity = similarity_matrix.max(axis=1) # 每个词与其他所有词的�
 max_index = np.argmax(similarity_matrix, axis=1) # 每个词与其最相似的下标
 
 # 合并相似度大于等于阈值
-threshold = 0.8
+threshold = 0.7
 dsu = UnionFind(sentence_embeddings.shape[0])
 for i in range(sentence_embeddings.shape[0]):
     if max_similarity[i] >= threshold:
@@ -130,5 +130,5 @@ def random_pick_topic(x):
 #topic_data[['主题', '主题长度']].groupby(['主题长度']).min()
 topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(lambda x: x.iloc[x.str.len().argmin()])
 # topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(random_pick_topic)
-topic_data.to_excel('./outputs/topicclassification-{}-{}-{}.xlsx'.format(model_name.replace('/','_'), threshold))
+topic_data.to_excel('./outputs/topicclassification-{}-{}.xlsx'.format(model_name.replace('/','_'), threshold))
 
