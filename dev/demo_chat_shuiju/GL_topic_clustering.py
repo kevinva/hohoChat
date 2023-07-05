@@ -60,7 +60,7 @@ model = SentenceTransformer(model_name)
 #sent_model/sentence_pair_sim/   hfl/chinese-roberta-wwm-ext
 
 sentence_embeddings = model.encode(topic)
-tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code = True)
+tokenizer = AutoTokenizer.from_pretrained("bert-base-chinese", trust_remote_code = True)
 print(f"tokenize：{tokenizer.tokenize(topic[10])}")
 
 #采用AffinityPropagation 层次聚类
