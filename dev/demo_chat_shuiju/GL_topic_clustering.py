@@ -61,7 +61,7 @@ model = SentenceTransformer(model_name)
 
 sentence_embeddings = model.encode(topic)
 tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code = True)
-print(f"tokenize：{tokenizer.tokenize(topic[:10])}")
+print(f"tokenize：{tokenizer.tokenize(topic[10])}")
 
 #采用AffinityPropagation 层次聚类
 # from sklearn.cluster import AffinityPropagation
