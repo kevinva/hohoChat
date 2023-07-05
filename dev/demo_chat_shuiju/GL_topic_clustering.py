@@ -60,7 +60,7 @@ model = SentenceTransformer(model_name)
 #sent_model/sentence_pair_sim/   hfl/chinese-roberta-wwm-ext
 
 sentence_embeddings = model.encode(topic)
-tokenizer = AutoTokenizer.from_pretrained("bert-base-chinese", trust_remote_code = True)
+tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code = True)
 print(f"tokenize：{tokenizer.tokenize(topic[10])}")
 
 #采用AffinityPropagation 层次聚类
@@ -130,6 +130,5 @@ def random_pick_topic(x):
 #topic_data[['主题', '主题长度']].groupby(['主题长度']).min()
 topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(lambda x: x.iloc[x.str.len().argmin()])
 # topic_data['分类后主题'] = topic_data.groupby('主题分类')['主题'].transform(random_pick_topic)
-topic_data.to_excel('./outputs/topicclassification-{}-{}-{}.xlsx'.format(model_name.replace('/','_'), threshold, logTime()))
-
+topic_data.to_excel('./outputs/topicclassification-{}-{}-{}.xlsx'.format(model_name.replace('/','_'), threshold))
 
