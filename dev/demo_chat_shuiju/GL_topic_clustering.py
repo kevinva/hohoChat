@@ -42,7 +42,7 @@ from sentence_transformers import SentenceTransformer, util
 import numpy as np
 # model_name = 'hfl/chinese-roberta-wwm-ext'
 # model_name = "/root/autodl-tmp/models/sentence_pair_sim"
-model_name = r"D:\temp\embeddings\multi-qa-mpnet-base-dot-v1"
+model_name = "/root/autodl-tmp/models/multi-qa-mpnet-base-dot-v1"
 model = SentenceTransformer(model_name)
 #sent_model/sentence_pair_sim/   hfl/chinese-roberta-wwm-ext
 
